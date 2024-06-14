@@ -78,7 +78,7 @@ namespace realEstateManagementAPI.Controllers
 
             return Ok(new GeneralResponse<string>
             {
-                Result = "User name or password is invalid",
+                Result = "Username or password is invalid",
                 IsError = true,
                 Code = 1
             });
@@ -107,6 +107,7 @@ namespace realEstateManagementAPI.Controllers
                 Surname = dto.Surname,
                 UserName = dto.Email,
                 Email = dto.Email,
+                RealEstateCompany = dto.RealEstateCompany
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, dto.Password);

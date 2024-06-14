@@ -33,9 +33,9 @@ namespace realEstateManagementAPI.Controllers
 
 
         [HttpGet("GetAllEstates")]
-        public async Task<IActionResult> GetAllEstates(EstateType? estateType = null, PropertyType? propertyType = null, int? numberOfRooms = null, string? city = null, string? postCode = null, string? searchText = null, string? adminUserId = null)
+        public async Task<IActionResult> GetAllEstates(EstateType? estateType = null, PropertyType? propertyType = null,int? RealEstateCompanyId = null, int? numberOfBedRooms = null, int? numberOfBathRooms = null,int? minPrice = null,int? maxPrice=null, int? squareMeterMin = null, int? squareMeterMax = null,bool? garden = null,bool? balcony = null , string? city = null, string? postCode = null, string? searchText = null, string? adminUserId = null)
         {
-            var spec = new EstateFilterSpesification(estateType, propertyType, numberOfRooms, city, postCode, searchText, adminUserId);
+            var spec = new EstateFilterSpesification(estateType, propertyType, RealEstateCompanyId, numberOfBedRooms, numberOfBathRooms,minPrice,maxPrice,squareMeterMin,squareMeterMax,garden,balcony ,city, postCode, searchText, adminUserId);
             List<EstateDto> estateDtos = await _estateService.ListEstatesAsync(spec); 
             
             return Ok(estateDtos);

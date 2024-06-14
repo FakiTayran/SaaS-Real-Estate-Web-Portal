@@ -11,11 +11,18 @@ namespace realEstateManagementEntities.Models.Dtos
 
         public EstateType EstateType { get; set; }
 
-        public int NumberOfRooms { get; set; }
+        public int NumberOfBedRooms { get; set; }
+        public int NumberOfBathRooms { get; set; }
+        public int SquareMeter { get; set; }
+
+        public bool Garden { get; set; }
+        public bool Balcony { get; set; }
 
         public List<byte[]>? EstatePictures { get; set; }
 
         public required string City { get; set; }
+
+        public decimal Price { get; set; }
 
         public required string PostCode { get; set; }
 
@@ -26,6 +33,8 @@ namespace realEstateManagementEntities.Models.Dtos
         public PropertyType PropertyType { get; set; }
 
         public AdminUser? EstateAgent { get; set; }
+
+        public RealEstateCompany? realEstateCompany { get; set; }
     }
 }
 

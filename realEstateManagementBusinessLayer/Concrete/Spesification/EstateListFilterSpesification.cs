@@ -9,7 +9,7 @@ namespace realEstateManagementBusinessLayer.Concrete.Spesification
 {
     public class EstateFilterSpesification : Specification<Estate>
     {
-        public EstateFilterSpesification(EstateType? estateType, PropertyType? propertyType, int? numberOfRooms, string? city, string? postCode, string? searchText, string? adminUserId)
+        public EstateFilterSpesification(EstateType? estateType, PropertyType? propertyType,int? RealEstateCompanyId,int? numberOfBedRooms, int? numberOfBathRooms,int? minPrice,int? maxPrice,int? squaremeterMin,int? squaremeterMax, bool? garden,bool? balcony,string? city, string? postCode, string? searchText, string? adminUserId)
         {
             if (estateType.HasValue)
             {
@@ -21,10 +21,53 @@ namespace realEstateManagementBusinessLayer.Concrete.Spesification
                 Query.Where(x => x.PropertyType == propertyType.Value);
             }
 
-            if (numberOfRooms.HasValue)
+            if (numberOfBedRooms.HasValue)
             {
-                Query.Where(x => x.NumberOfRooms == numberOfRooms.Value);
+                Query.Where(x => x.NumberOfBedRooms == numberOfBedRooms.Value);
             }
+
+            if (numberOfBathRooms.HasValue)
+            {
+                Query.Where(x => x.NumberOfBathRooms == numberOfBathRooms.Value);
+            }
+
+            if (RealEstateCompanyId.HasValue)
+            {
+                Query.Where(x => x.RealEstateCompanyId == RealEstateCompanyId);
+
+            }
+
+            if (garden.HasValue)
+            {
+                Query.Where(x => x.Garden == garden);
+            }
+
+            if (balcony.HasValue)
+            {
+                Query.Where(x => x.Balcony == balcony);
+            }
+
+
+            if (squaremeterMin.HasValue)
+            {
+                Query.Where(x => x.SquareMeter > squaremeterMin);
+            }
+
+            if (squaremeterMax.HasValue)
+            {
+                Query.Where(x => x.SquareMeter < squaremeterMax);
+            }
+
+            if (minPrice.HasValue)
+            {
+                Query.Where(x => x.Price > minPrice);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                Query.Where(x => x.Price < maxPrice);
+            }
+
 
             if (!string.IsNullOrEmpty(city))
             {

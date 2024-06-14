@@ -53,7 +53,8 @@ namespace realEstateManagementBusinessLayer.Concrete
                     Description = estate.Description,
                     Headline = estate.Headline,
                     EstateAgent = estate.EstateAgent,
-                    NumberOfRooms = estate.NumberOfRooms,
+                    NumberOfBedRooms = estate.NumberOfBedRooms,
+                    NumberOfBathRooms = estate.NumberOfBathRooms,
                     PostCode = estate.PostCode,
                     EstatePictures = estate.EstatePictures.Select(x => x.img).ToList(),
                 };

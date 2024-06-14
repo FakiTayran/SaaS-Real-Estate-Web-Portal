@@ -23,7 +23,18 @@ namespace realEstateManagementEntities.Models
         [Range(1, 10)]
         [Display(Name = "Number Of Rooms")]
 
-        public int NumberOfRooms { get; set; }
+        public int NumberOfBedRooms { get; set; }
+
+        public int NumberOfBathRooms { get; set; }
+
+        public int SquareMeter { get; set; }
+
+        public decimal Price { get; set; }
+
+        public bool Balcony { get; set; }
+
+        public bool Garden { get; set; }
+
 
         public virtual ICollection<EstatePicture>? EstatePictures { get; set; }
 
@@ -41,13 +52,17 @@ namespace realEstateManagementEntities.Models
         [JsonIgnore]
         public AdminUser? EstateAgent { get; set; }
 
+        public int RealEstateCompanyId { get; set; }
+
+        public RealEstateCompany? RealEstateCompany { get; set; }
+
     }
 
     public enum EstateType
     {
         [Display(Name = "For Sale")]
         ForSale = 0,
-        [Display(Name = "For Rent")]
+        [Display(Name = "Monthly Rent")]
         ForRent = 1,
         [Display(Name = "Daily Rent")]
         DailyRent = 2

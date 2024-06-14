@@ -35,9 +35,9 @@ namespace realEstateManagementAPI.Controllers
 
         // GET: /<controller>/
         [HttpGet("GetEstates")]
-        public async Task<IActionResult> GetEstates(EstateType? estateType = null, PropertyType? propertyType = null, int? numberOfRooms = null, string? city = null, string? postCode = null, string? searchText = null, string? adminUserId = null)
+        public async Task<IActionResult> GetAllEstates(EstateType? estateType = null, PropertyType? propertyType = null, int? RealEstateCompanyId = null, int? numberOfBedRooms = null, int? numberOfBathRooms = null, int? minPrice = null, int? maxPrice = null, int? squareMeterMin = null, int? squareMeterMax = null, bool? garden = null, bool? balcony = null, string? city = null, string? postCode = null, string? searchText = null, string? adminUserId = null)
         {
-            var spec = new EstateFilterSpesification(estateType, propertyType, numberOfRooms, city, postCode, searchText, adminUserId);
+            var spec = new EstateFilterSpesification(estateType, propertyType, RealEstateCompanyId, numberOfBedRooms, numberOfBathRooms, minPrice, maxPrice, squareMeterMin, squareMeterMax, garden, balcony, city, postCode, searchText, adminUserId);
             var estates = await _estateService.ListEstatesAsync(spec); // Ensure this call is awaited
 
             return Ok(estates);
@@ -78,7 +78,14 @@ namespace realEstateManagementAPI.Controllers
             willBeUpdatedEstate.EstateType = estate.EstateType;
             willBeUpdatedEstate.PropertyType = estate.PropertyType;
             willBeUpdatedEstate.PostCode = estate.PostCode;
-            willBeUpdatedEstate.NumberOfRooms = estate.NumberOfRooms;
+            willBeUpdatedEstate.NumberOfBedRooms = estate.NumberOfBedRooms;
+            willBeUpdatedEstate.NumberOfBathRooms = estate.NumberOfBathRooms;
+            willBeUpdatedEstate.Garden = estate.Garden;
+            willBeUpdatedEstate.Balcony = estate.Balcony;
+            willBeUpdatedEstate.Price = estate.Price;
+            willBeUpdatedEstate.SquareMeter = estate.SquareMeter;
+
+
             willBeUpdatedEstate.Headline = estate.Headline;
             if (estate.EstateAgentId != willBeUpdatedEstate.EstateAgentId)
             {

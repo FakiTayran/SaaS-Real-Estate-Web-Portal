@@ -20,6 +20,8 @@ namespace realEstateManagementEntities.Models.Dtos
         [MinLength(6)]
         public required string ConfirmPassword { get; set; }
 
+        public required RealEstateCompany RealEstateCompany { get; set; }
+
     }
 }
 

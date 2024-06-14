@@ -11,6 +11,10 @@ namespace realEstateManagementEntities.Models
 
         public string? Token { get; set; }
 
+        public int RealEstateCompanyId { get; set; }
+
+        public RealEstateCompany? RealEstateCompany { get; set; }
+
     }
 }
 
