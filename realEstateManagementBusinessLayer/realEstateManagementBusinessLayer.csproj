@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Abstract\" />
+    <None Remove="Concrete\" />
+    <None Remove="Concrete\Spesification\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\" />
+    <Folder Include="Concrete\" />
+    <Folder Include="Concrete\Spesification\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\realEstateManagementDataLayer\realEstateManagementDataLayer.csproj" />
+    <ProjectReference Include="..\realEstateManagementEntities\realEstateManagementEntities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ardalis.Specification, Version=7.0.0.0, Culture=neutral, PublicKeyToken=null" />
+  </ItemGroup>
+</Project>
