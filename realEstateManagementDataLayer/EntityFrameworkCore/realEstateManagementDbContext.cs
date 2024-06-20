@@ -25,6 +25,7 @@ namespace realEstateManagementDataLayer.EntityFramework
         }
         public DbSet<Estate> Estates { get; set; }
         public DbSet<EstatePicture> EstatePictures { get; set; }
+        public DbSet<RealEstateCompany> RealEstateCompany { get; set; }
 
     }
 }

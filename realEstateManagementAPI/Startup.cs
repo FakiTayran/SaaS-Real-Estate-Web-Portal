@@ -121,6 +121,7 @@ namespace realEstateManagement
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EFRepository<>));
             services.AddScoped<IEstateService, EstateManager>();
             services.AddScoped<IEstatePictureService, EstatePictureManager>();
+            services.AddScoped<IEstateCompanyService, EstateCompanyManager>();
             services.AddTransient<ClaimsPrincipal>(
                s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddSingleton<IConfiguration>(Configuration);

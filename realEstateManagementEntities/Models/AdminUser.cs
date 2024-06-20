@@ -9,9 +9,11 @@ namespace realEstateManagementEntities.Models
 
         public required string Surname { get; set; }
 
+        public byte[]? userPP { get; set; }
+
         public string? Token { get; set; }
 
-        public int RealEstateCompanyId { get; set; }
+        public int? RealEstateCompanyId { get; set; }
 
         public RealEstateCompany? RealEstateCompany { get; set; }
 

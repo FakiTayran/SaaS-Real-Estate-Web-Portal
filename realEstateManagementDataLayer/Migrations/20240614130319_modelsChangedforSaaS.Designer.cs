@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using realEstateManagementDataLayer.EntityFramework;
@@ -11,9 +12,11 @@ using realEstateManagementDataLayer.EntityFramework;
 namespace realEstateManagementDataLayer.Migrations
 {
     [DbContext(typeof(RealEstateManagementDbContext))]
-    partial class RealEstateManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240614130319_modelsChangedforSaaS")]
+    partial class modelsChangedforSaaS
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,9 +223,6 @@ namespace realEstateManagementDataLayer.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<byte[]>("userPP")
-                        .HasColumnType("bytea");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -266,18 +266,6 @@ namespace realEstateManagementDataLayer.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Headline")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LandLordEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LandLordName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LandLordPhone")
                         .IsRequired()
                         .HasColumnType("text");
 

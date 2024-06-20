@@ -56,6 +56,12 @@ namespace realEstateManagementEntities.Models
 
         public RealEstateCompany? RealEstateCompany { get; set; }
 
+        public string LandLordName { get; set; }
+        public string LandLordPhone { get; set; }
+        public string LandLordEmail { get; set; }
+
+
+
     }
 
     public enum EstateType

@@ -9,7 +9,7 @@ namespace realEstateManagementEntities.Models
 
         public string? TaxNumber { get; set; }
 
-        public virtual ICollection<AdminUser>? EstateAgents { get; set; }
+        public virtual ICollection<AdminUser> EstateAgents { get; set; } = new HashSet<AdminUser>();
 
     }
 }
