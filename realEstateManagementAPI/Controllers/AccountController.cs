@@ -201,10 +201,11 @@ namespace realEstateManagementAPI.Controllers
             }
         }
 
-        [HttpGet("GetAllAgents")]
-        public IActionResult GetAllAgents()
+        [HttpGet("GetAllAgents/{estateCompanyId}")]
+        public IActionResult GetAllAgents(int estateCompanyId)
         {
             var users = _userManager.Users
+                .Where(u => u.RealEstateCompanyId == estateCompanyId) // Assuming you want to filter by estateAgentId
                 .Select(u => new
                 {
                     Id = u.Id,
@@ -217,6 +218,7 @@ namespace realEstateManagementAPI.Controllers
 
             return Ok(users);
         }
+
 
         [HttpGet("IsAuthorize")]
         [Authorize]

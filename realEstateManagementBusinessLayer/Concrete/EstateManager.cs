@@ -50,13 +50,20 @@ namespace realEstateManagementBusinessLayer.Concrete
                     EstateType = estate.EstateType,
                     PropertyType = estate.PropertyType,
                     City = estate.City,
+                    Price = estate.Price,
+                    SquareMeter = estate.SquareMeter,
+                    Balcony = estate.Balcony,
+                    Garden = estate.Garden,
                     Description = estate.Description,
                     Headline = estate.Headline,
                     EstateAgent = estate.EstateAgent,
                     NumberOfBedRooms = estate.NumberOfBedRooms,
                     NumberOfBathRooms = estate.NumberOfBathRooms,
                     PostCode = estate.PostCode,
-                    EstatePictures = estate.EstatePictures.Select(x => x.img).ToList(),
+                    LandLordName = estate.LandLordName,
+                    LandLordEmail = estate.LandLordEmail,
+                    LandLordPhone = estate.LandLordPhone,
+                    EstatePictures = estate.EstatePictures?.Select(x => x.img).ToList(),
                 };
                 estateDtos.Add(estateDto);
             }

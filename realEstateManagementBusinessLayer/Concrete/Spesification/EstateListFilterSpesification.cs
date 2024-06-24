@@ -71,17 +71,17 @@ namespace realEstateManagementBusinessLayer.Concrete.Spesification
 
             if (!string.IsNullOrEmpty(city))
             {
-                Query.Where(x => x.City == city);
+                Query.Where(x => x.City.ToLower().Trim() == city.ToLower().Trim());
             }
 
             if (!string.IsNullOrEmpty(postCode))
             {
-                Query.Where(x => x.PostCode == postCode);
+                Query.Where(x => x.PostCode.ToLower().Trim() == postCode.ToLower().Trim());
             }
 
             if (!string.IsNullOrEmpty(searchText))
             {
-                Query.Where(x => x.Id.ToString().Contains(searchText) || x.Description.ToLower().Contains(searchText));
+                Query.Where(x => x.Headline.ToLower().Contains(searchText.ToLower()) || x.Description.ToLower().Contains(searchText.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(adminUserId))

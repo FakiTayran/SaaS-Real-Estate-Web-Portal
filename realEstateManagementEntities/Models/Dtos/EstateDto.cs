@@ -35,6 +35,11 @@ namespace realEstateManagementEntities.Models.Dtos
         public AdminUser? EstateAgent { get; set; }
 
         public RealEstateCompany? realEstateCompany { get; set; }
+
+        public string? LandLordName { get; set; }
+        public string? LandLordPhone { get; set; }
+        public string? LandLordEmail { get; set; }
+
     }
 }
 

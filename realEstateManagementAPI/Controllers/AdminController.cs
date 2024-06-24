@@ -84,6 +84,9 @@ namespace realEstateManagementAPI.Controllers
             willBeUpdatedEstate.Balcony = estate.Balcony;
             willBeUpdatedEstate.Price = estate.Price;
             willBeUpdatedEstate.SquareMeter = estate.SquareMeter;
+            willBeUpdatedEstate.LandLordName = estate.LandLordName;
+            willBeUpdatedEstate.LandLordPhone = estate.LandLordPhone;
+            willBeUpdatedEstate.LandLordEmail = estate.LandLordEmail;
 
 
             willBeUpdatedEstate.Headline = estate.Headline;
@@ -109,6 +112,7 @@ namespace realEstateManagementAPI.Controllers
             }
            
         }
+
         [HttpDelete("DeleteEstate/{estateId}")]
         public async Task<IActionResult> DeleteEstate(int estateId)
         {
