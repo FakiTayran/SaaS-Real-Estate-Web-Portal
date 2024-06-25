@@ -134,7 +134,7 @@ namespace realEstateManagementAPI.Controllers
         }
 
         [HttpPost("AddEstatePhotos/{estateId}")]
-        public async Task<IActionResult> AddEstatePhotos(int estateId, IFormCollection imgs)
+        public async Task<IActionResult> AddEstatePhotos(int estateId, [FromForm] IFormCollection imgs)
         {
             var estate = await _estateService.GetByIdAsync(estateId);
             if (estate == null)
@@ -146,7 +146,6 @@ namespace realEstateManagementAPI.Controllers
             {
                 return BadRequest("No images provided.");
             }
-
 
             foreach (var image in imgs.Files)
             {
@@ -172,9 +171,8 @@ namespace realEstateManagementAPI.Controllers
                 }
             }
 
-            return Ok("Images added successfully.");
+            return Ok(new { message = "Images added successfully." });
         }
-
 
 
     }
