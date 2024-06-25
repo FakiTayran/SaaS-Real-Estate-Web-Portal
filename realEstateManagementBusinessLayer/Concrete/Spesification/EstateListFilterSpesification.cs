@@ -31,11 +31,10 @@ namespace realEstateManagementBusinessLayer.Concrete.Spesification
                 Query.Where(x => x.NumberOfBathRooms == numberOfBathRooms.Value);
             }
 
-            if (RealEstateCompanyId.HasValue)
-            {
-                Query.Where(x => x.RealEstateCompanyId == RealEstateCompanyId);
+           
+            Query.Where(x => x.RealEstateCompanyId == RealEstateCompanyId.Value);
+            
 
-            }
 
             if (garden.HasValue)
             {

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using realEstateManagementAPI.UtilityHelper;
 using realEstateManagementBusinessLayer.Abstract;
 using realEstateManagementBusinessLayer.Concrete.Spesification;
 using realEstateManagementDataLayer.EntityFramework;
@@ -31,17 +34,41 @@ namespace realEstateManagementAPI.Controllers
             _userManager = userManager;
         }
 
-        
+
 
         // GET: /<controller>/
         [HttpGet("GetEstates")]
-        public async Task<IActionResult> GetAllEstates(EstateType? estateType = null, PropertyType? propertyType = null, int? RealEstateCompanyId = null, int? numberOfBedRooms = null, int? numberOfBathRooms = null, int? minPrice = null, int? maxPrice = null, int? squareMeterMin = null, int? squareMeterMax = null, bool? garden = null, bool? balcony = null, string? city = null, string? postCode = null, string? searchText = null, string? adminUserId = null)
+        public async Task<IActionResult> GetAllEstates(
+            EstateType? estateType = null,
+            PropertyType? propertyType = null,
+            int? RealEstateCompanyId = null,
+            int? numberOfBedRooms = null,
+            int? numberOfBathRooms = null,
+            int? minPrice = null,
+            int? maxPrice = null,
+            int? squareMeterMin = null,
+            int? squareMeterMax = null,
+            bool? garden = null,
+            bool? balcony = null,
+            string? city = null,
+            string? postCode = null,
+            string? searchText = null,
+            string? adminUserId = null)
         {
-            var spec = new EstateFilterSpesification(estateType, propertyType, RealEstateCompanyId, numberOfBedRooms, numberOfBathRooms, minPrice, maxPrice, squareMeterMin, squareMeterMax, garden, balcony, city, postCode, searchText, adminUserId);
-            var estates = await _estateService.ListEstatesAsync(spec); // Ensure this call is awaited
+            if (!RealEstateCompanyId.HasValue)
+            {
+                throw new ArgumentNullException(nameof(RealEstateCompanyId), "RealEstateCompanyId must be provided.");
+            }
+
+            var spec = new EstateFilterSpesification(
+                estateType, propertyType, RealEstateCompanyId, numberOfBedRooms, numberOfBathRooms,
+                minPrice, maxPrice, squareMeterMin, squareMeterMax, garden, balcony, city, postCode, searchText, adminUserId
+            );
+            var estates = await _estateService.ListEstatesAsync(spec);
 
             return Ok(estates);
         }
+
 
 
         [HttpPost("AddEstate")]
@@ -188,8 +215,7 @@ namespace realEstateManagementAPI.Controllers
             return BadRequest("Photo cannot removed. An Error Occured");
 
         }
-
-
+     
 
     }
 }

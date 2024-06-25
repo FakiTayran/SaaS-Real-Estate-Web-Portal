@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using realEstateManagementAPI.UtilityHelper;
 using realEstateManagementBusinessLayer.Abstract;
 using realEstateManagementDataLayer.EntityFramework;
 using realEstateManagementEntities.Models;
@@ -26,13 +29,15 @@ namespace realEstateManagementAPI.Controllers
         private readonly IOptions<AppSettings> _appSettings;
         private readonly RealEstateManagementDbContext _dbContext;
         private readonly IEstateCompanyService _estateCompanyService;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(UserManager<AdminUser> userManager, IOptions<AppSettings> appSettings, RealEstateManagementDbContext dbContext, IEstateCompanyService estateCompanyService)
+        public AccountController(UserManager<AdminUser> userManager, IOptions<AppSettings> appSettings, RealEstateManagementDbContext dbContext, IEstateCompanyService estateCompanyService,IConfiguration configuration)
         {
             _userManager = userManager;
             _appSettings = appSettings;
             _dbContext = dbContext;
             _estateCompanyService = estateCompanyService;
+            _configuration = configuration;
         }
 
         [HttpPost("Login")]
@@ -101,23 +106,13 @@ namespace realEstateManagementAPI.Controllers
                 });
             }
 
-            RealEstateCompany addedEstate = null;
-            if (dto.EstateCompanyId.HasValue)
+            var estateCompany = new RealEstateCompany
             {
-                addedEstate = await GetEstateCompanyById(dto.EstateCompanyId.Value);
-                if (addedEstate == null)
-                {
-                    return BadRequest(new GeneralResponse<string>
-                    {
-                        Result = "Invalid EstateCompanyId",
-                        IsError = true
-                    });
-                }
-            }
-            else
-            {
-                addedEstate = await AddEstateCompanyIfNeeded(dto);
-            }
+                Name = dto.CompanyName,
+                TaxNumber = dto.TaxNumber
+            };
+
+            var addedEstate = await _estateCompanyService.AddEstateCompany(estateCompany);
 
             var userCreationResult = await CreateUser(dto, addedEstate);
             if (userCreationResult.Succeeded)
@@ -226,5 +221,131 @@ namespace realEstateManagementAPI.Controllers
         {
             return Ok();
         }
+
+
+        [Authorize]
+        [HttpPost("AddEstateAgent")]
+        public async Task<IActionResult> AddEstateAgent(AddEstateAgentDto dto)
+        {
+            if (string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Name))
+            {
+                return BadRequest(new GeneralResponse<string>
+                {
+                    Result = "Email and Name are required",
+                    IsError = true
+                });
+            }
+
+            var estateCompany = await GetEstateCompanyById(dto.EstateCompanyId);
+            if (estateCompany == null)
+            {
+                return BadRequest(new GeneralResponse<string>
+                {
+                    Result = "Invalid EstateCompanyId",
+                    IsError = true
+                });
+            }
+
+            var randomPassword = GenerateRandomPassword();
+
+            var user = new AdminUser
+            {
+                UserName = dto.Email,
+                Email = dto.Email,
+                Name = dto.Name,
+                Surname = dto.Surname,
+                RealEstateCompanyId = dto.EstateCompanyId
+            };
+
+            var result = await _userManager.CreateAsync(user, randomPassword);
+
+            if (result.Succeeded)
+            {
+                SendPasswordToEmail(user.Email, randomPassword);
+                return Ok(new GeneralResponse<string>
+                {
+                    Result = "Estate agent added successfully",
+                    IsError = false
+                });
+            }
+
+            return BadRequest(new GeneralResponse<string>
+            {
+                Result = "Error adding estate agent",
+                IsError = true
+            });
+        }
+
+        private string GenerateRandomPassword(int length = 12)
+        {
+            const string validChars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var password = new char[length];
+            for (int i = 0; i < 10; i++)
+            {
+                password[i] = validChars[random.Next(validChars.Length)];
+            }
+            password[10] = '.';
+            password[11] = 'L';
+
+
+
+            return new string(password);
+        }
+
+        private void SendPasswordToEmail(string email, string password)
+        {
+
+            try
+            {
+                var mailHelper = new MailHelper(_configuration);
+                var mailModel = new MailModelDto
+                {
+                    Subject = "Your new account password",
+                    To = email,
+                    Body = $"Your portal password is: {password}",
+                    MailPriority = MailPriority.Normal
+                };
+                mailHelper.MailSender(mailModel.Subject, mailModel.To, mailModel.Body, mailModel.MailPriority);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+
+        }
+        [Authorize]
+        [HttpDelete("DeleteEstateAgent/{id}")]
+        public async Task<IActionResult> DeleteEstateAgent(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound(new GeneralResponse<string>
+                {
+                    Result = "Estate agent not found",
+                    IsError = true
+                });
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(new GeneralResponse<string>
+                {
+                    Result = "Estate agent deleted successfully",
+                    IsError = false
+                });
+            }
+
+            return BadRequest(new GeneralResponse<string>
+            {
+                Result = "Error deleting estate agent",
+                IsError = true
+            });
+        }
+
     }
 }
