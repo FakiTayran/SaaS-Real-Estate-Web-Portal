@@ -174,6 +174,22 @@ namespace realEstateManagementAPI.Controllers
             return Ok(new { message = "Images added successfully." });
         }
 
+        [HttpDelete("DeleteEstatePhoto/{photoId}")]
+        public async Task<IActionResult> DeleteEstatePhoto( int photoId)
+        {
+
+            var picture = await _estatePictureService.GetEstatePictureById(photoId);
+            if (picture!=null)
+            {
+                await _estatePictureService.Delete(picture);
+                return Ok(new {message= "Photo removed successfully." });
+
+            }
+            return BadRequest("Photo cannot removed. An Error Occured");
+
+        }
+
+
 
     }
 }

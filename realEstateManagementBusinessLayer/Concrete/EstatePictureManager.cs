@@ -24,6 +24,11 @@ namespace realEstateManagementBusinessLayer.Concrete
         {
             await _asyncRepository.DeleteAsync(estatePicture);
         }
+
+        public async Task<EstatePicture> GetEstatePictureById(int id)
+        {
+            return  await _asyncRepository.GetByIdAsync(id);
+        } 
     }
 }
 

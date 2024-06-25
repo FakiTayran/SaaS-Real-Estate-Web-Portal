@@ -18,7 +18,7 @@ namespace realEstateManagementEntities.Models.Dtos
         public bool Garden { get; set; }
         public bool Balcony { get; set; }
 
-        public List<byte[]>? EstatePictures { get; set; }
+        public List<EstatePictureDto>? EstatePictures { get; set; }
 
         public required string City { get; set; }
 

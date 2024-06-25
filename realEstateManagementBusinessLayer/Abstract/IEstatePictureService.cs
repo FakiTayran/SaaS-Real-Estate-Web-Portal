@@ -7,5 +7,6 @@ namespace realEstateManagementBusinessLayer.Abstract
 	{
         Task<EstatePicture> AddEstatePicture(EstatePicture estatePicture);
         Task Delete(EstatePicture estate);
+        Task<EstatePicture> GetEstatePictureById(int id);
     }
 }

@@ -36,7 +36,7 @@ namespace realEstateManagementEntities.Models
         public bool Garden { get; set; }
 
 
-        public virtual ICollection<EstatePicture>? EstatePictures { get; set; }
+        public virtual ICollection<EstatePicture>? EstatePictures { get; set; } = new List<EstatePicture>();
 
         public required string City { get; set; }
 

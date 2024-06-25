@@ -63,8 +63,19 @@ namespace realEstateManagementBusinessLayer.Concrete
                     LandLordName = estate.LandLordName,
                     LandLordEmail = estate.LandLordEmail,
                     LandLordPhone = estate.LandLordPhone,
-                    EstatePictures = estate.EstatePictures?.Select(x => x.img).ToList(),
+                    EstatePictures = new List<EstatePictureDto>()
+            
                 };
+                foreach (var picture in estate.EstatePictures)
+                {
+                    var pictureDto = new EstatePictureDto
+                    {
+                        Id = picture.Id,
+                        img = picture.img 
+                    };
+                    estateDto.EstatePictures.Add(pictureDto);
+                }
+
                 estateDtos.Add(estateDto);
             }
 
