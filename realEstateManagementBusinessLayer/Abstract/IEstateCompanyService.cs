@@ -7,6 +7,8 @@ namespace realEstateManagementBusinessLayer.Abstract
     {
         Task<RealEstateCompany> AddEstateCompany(RealEstateCompany estateCompany);
         Task<RealEstateCompany> GetEstateCompanyById(int estateCompanyId);
+        Task UpdateEstateCompany(RealEstateCompany estateCompany);
+
 
     }
 }

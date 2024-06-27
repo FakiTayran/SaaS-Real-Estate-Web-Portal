@@ -77,6 +77,8 @@ namespace realEstateManagementAPI.Controllers
 
                 return Ok(new TokenResult
                 {
+                    name = user.Name,
+                    surname = user.Surname,
                     access_token = stringToken,
                     companyName = user.RealEstateCompany?.Name ?? string.Empty, // Null kontrolü
                     userName = user.UserName,
@@ -87,12 +89,8 @@ namespace realEstateManagementAPI.Controllers
                 });
             }
 
-            return Ok(new GeneralResponse<string>
-            {
-                Result = "Username or password is invalid",
-                IsError = true,
-                Code = 1
-            });
+            return BadRequest();
+            
         }
 
         [HttpPost("Register")]
@@ -151,21 +149,7 @@ namespace realEstateManagementAPI.Controllers
             return false;
         }
 
-        private async Task<RealEstateCompany> AddEstateCompanyIfNeeded(RegisterDto dto)
-        {
-            if (!string.IsNullOrEmpty(dto.CompanyName) || !string.IsNullOrEmpty(dto.TaxNumber))
-            {
-                var estateCompany = new RealEstateCompany
-                {
-                    Name = dto.CompanyName,
-                    TaxNumber = dto.TaxNumber
-                };
-
-                return await _estateCompanyService.AddEstateCompany(estateCompany);
-            }
-
-            return null;
-        }
+       
 
         private async Task<RealEstateCompany> GetEstateCompanyById(int estateCompanyId)
         {
@@ -346,6 +330,126 @@ namespace realEstateManagementAPI.Controllers
                 IsError = true
             });
         }
+
+        [Authorize]
+        [HttpPost("UpdateProfile")]
+        public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null)
+            {
+                return NotFound(new GeneralResponse<string>
+                {
+                    Result = "User not found",
+                    IsError = true
+                });
+            }
+
+            user.Name = dto.Name;
+            user.Surname = dto.Surname;
+            user.Email = dto.Email;
+            user.UserName = dto.Email;
+
+            if (dto.ProfilePicture != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await dto.ProfilePicture.CopyToAsync(memoryStream);
+                    user.userPP = memoryStream.ToArray();
+                }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(new
+                {
+                    user.Name,
+                    user.Surname,
+                    Email = user.Email,
+                    UserPP = user.userPP != null ? Convert.ToBase64String(user.userPP) : null
+                });
+            }
+
+            return BadRequest(new GeneralResponse<string>
+            {
+                Result = "Error updating profile",
+                IsError = true
+            });
+        }
+
+
+        [Authorize]
+        [HttpPost("UpdateEstateCompany")]
+        public async Task<IActionResult> UpdateEstateCompany([FromForm] UpdateCompanySettingsDto dto)
+        {
+            var company = await _estateCompanyService.GetEstateCompanyById(dto.id);
+            if (company == null)
+            {
+                return NotFound(new GeneralResponse<string>
+                {
+                    Result = "Company not found",
+                    IsError = true
+                });
+            }
+
+            company.Name = dto.CompanyName;
+
+            if (dto.CompanyIcon != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await dto.CompanyIcon.CopyToAsync(memoryStream);
+                    company.Icon = memoryStream.ToArray();
+                }
+            }
+
+            await _estateCompanyService.UpdateEstateCompany(company);
+
+            return Ok(new
+            {
+                companyName = company.Name,
+                icon = company.Icon != null ? company.Icon : null
+            });
+        }
+
+        [Authorize]
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound(new GeneralResponse<string>
+                {
+                    Result = "User not found",
+                    IsError = true
+                });
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Ok(new GeneralResponse<string>
+                {
+                    Result = "Password changed successfully",
+                    IsError = false
+                });
+            }
+
+            return BadRequest(new GeneralResponse<string>
+            {
+                Result = "Error changing password",
+                IsError = true
+            });
+        }
+
+
+
 
     }
 }

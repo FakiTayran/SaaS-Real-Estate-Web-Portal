@@ -23,6 +23,11 @@ namespace realEstateManagementBusinessLayer.Concrete
         {
             return await _asyncRepository.GetByIdAsync(estateCompanyId);
         }
+
+        public async Task UpdateEstateCompany(RealEstateCompany estateCompany)
+        {
+             await _asyncRepository.UpdateAsync(estateCompany);
+        }
     }
 }
 
