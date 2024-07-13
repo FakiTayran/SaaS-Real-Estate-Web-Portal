@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>bdb07853-b37a-40f1-97a2-5ccc5e8413b3</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -26,20 +28,31 @@
   <ItemGroup>
     <None Remove="Controllers\" />
     <None Remove="UtilityHelper\" />
+    <None Remove="mycert.crt" />
+    <None Remove="mycert.pfx" />
+    <None Remove="mykey.key" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="UtilityHelper\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\realEstateManagementDataLayer\realEstateManagementDataLayer.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
     <ProjectReference Include="..\realEstateManagementBusinessLayer\realEstateManagementBusinessLayer.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\realEstateManagementEntities\realEstateManagementEntities.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+<ItemGroup>
+    <None Update="mycert.crt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mycert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mykey.key">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

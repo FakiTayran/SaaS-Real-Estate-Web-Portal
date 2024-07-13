@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres:latest
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: realEstateManagement
+      POSTGRES_USER: faki
+      POSTGRES_PASSWORD: 23323847lol
+    ports:
+      - "5433:5432"
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+    restart: always
+
+  realestatemanagementapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=db;Port=5433;Database=realEstateManagement;Username=faki;Password=23323847lol;
+    ports:
+      - "7070:80"
+      - "8443:443"
+    networks:
+      - dev
+
+networks:
+  dev:
+
+volumes:
+  app_data:

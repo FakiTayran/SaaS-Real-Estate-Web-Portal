@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Net;
 
 namespace realEstateManagement
 {
@@ -11,16 +12,18 @@ namespace realEstateManagement
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-         Host.CreateDefaultBuilder(args)
-             .ConfigureWebHostDefaults(webBuilder =>
-             {
-                 webBuilder.ConfigureKestrel(serverOptions =>
-                 {
-                     // İstek başına 5 dakikalık zaman aşımı
-                     serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(5);
-                 })
-                 .UseStartup<Startup>();
-         });
-
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.Listen(IPAddress.Any, 80); // HTTP port
+                        serverOptions.Listen(IPAddress.Any, 443, listenOptions =>
+                        {
+                            listenOptions.UseHttps("mycert.pfx", "23323847lol"); // HTTPS port
+                        });
+                    })
+                    .UseStartup<Startup>();
+                });
     }
 }

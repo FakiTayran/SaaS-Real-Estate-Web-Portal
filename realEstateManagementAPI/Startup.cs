@@ -148,7 +148,6 @@ namespace realEstateManagement
 
             app.UseAuthorization();
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

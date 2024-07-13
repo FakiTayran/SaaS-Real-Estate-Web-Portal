@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realEstateManagementDataLay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realEstateManagementAPI", "realEstateManagementAPI\realEstateManagementAPI.csproj", "{DFE1B859-C7DE-42D2-A876-4223B164FFD6}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{96769ECE-8939-403B-8C74-2BF35B0D9D4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DFE1B859-C7DE-42D2-A876-4223B164FFD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFE1B859-C7DE-42D2-A876-4223B164FFD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFE1B859-C7DE-42D2-A876-4223B164FFD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96769ECE-8939-403B-8C74-2BF35B0D9D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96769ECE-8939-403B-8C74-2BF35B0D9D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96769ECE-8939-403B-8C74-2BF35B0D9D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96769ECE-8939-403B-8C74-2BF35B0D9D4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
